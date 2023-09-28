@@ -1,0 +1,153 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Cargo {
+  idCargo      Int            @id @default(autoincrement())
+  cargonome    String         @db.VarChar(100)
+  funcionarios Funcionarios[]
+
+  @@map("cargo")
+}
+
+model Categoria {
+  idCategoria   Int        @id @default(autoincrement())
+  nomecategoria String     @db.VarChar(100)
+  descricao     String?    @db.VarChar(500)
+  produtos      Produtos[]
+
+  @@map("categoria")
+}
+
+model Compras {
+  idcompras                 Int           @unique @default(autoincrement())
+  datacompra                DateTime      @db.Date
+  Fornecedores_idfornecedor Int
+  fornecedores              Fornecedores  @relation(fields: [Fornecedores_idfornecedor], references: [idfornecedor], onDelete: NoAction, onUpdate: NoAction, map: "fk_compras_Fornecedores1")
+  itenscompra               ItensCompra[]
+
+  @@id([idcompras, Fornecedores_idfornecedor])
+  @@index([Fornecedores_idfornecedor], map: "fk_compras_Fornecedores1_idx")
+  @@map("compras")
+}
+
+model FornecedorEmail {
+  email                   String       @db.VarChar(120)
+  fornecedor_idfornecedor Int          @id @default(autoincrement())
+  fornecedores            Fornecedores @relation(fields: [fornecedor_idfornecedor], references: [idfornecedor], onDelete: NoAction, onUpdate: NoAction, map: "fk_FornecedorEmail_fornecedor1")
+
+  @@map("fornecedor_email")
+}
+
+model Fornecedores {
+  idfornecedor    Int              @id @default(autoincrement())
+  nomefornecedor  String           @db.VarChar(200)
+  endereco        String           @db.VarChar(500)
+  CNPJ            String           @db.VarChar(14)
+  compras         Compras[]
+  fornecedoremail FornecedorEmail?
+  fornecedortel   FornecedorTel?
+
+  @@map("fornecedores")
+}
+
+model FornecedorTel {
+  telefone                String       @db.VarChar(14)
+  fornecedor_idfornecedor Int          @id
+  fornecedores            Fornecedores @relation(fields: [fornecedor_idfornecedor], references: [idfornecedor], onDelete: NoAction, onUpdate: NoAction, map: "fk_FornecedorTel_fornecedor")
+
+  @@map("fornecedor_tel")
+}
+
+model Funcionarios {
+  idFuncionarios      Int                  @unique @default(autoincrement())
+  nomefuncionario     String               @db.VarChar(200)
+  endereco            String               @db.VarChar(500)
+  Cargo_idCargo       Int
+  cpf                 String               @db.VarChar(11)
+  cargo               Cargo                @relation(fields: [Cargo_idCargo], references: [idCargo], onDelete: NoAction, onUpdate: NoAction, map: "fk_Funcionarios_Cargo1")
+  funcionariotelefone FuncionarioTelefone?
+  vendas              Vendas[]
+
+  @@id([idFuncionarios, Cargo_idCargo])
+  @@index([Cargo_idCargo], map: "fk_Funcionarios_Cargo1_idx")
+  @@map("funcionarios")
+}
+
+model FuncionarioTelefone {
+  telefonefuncionario         String       @db.VarChar(14)
+  Funcionarios_idFuncionarios Int          @id
+  funcionarios                Funcionarios @relation(fields: [Funcionarios_idFuncionarios], references: [idFuncionarios], onDelete: NoAction, onUpdate: NoAction, map: "fk_FuncionarioTelefone_Funcionarios1")
+
+  @@map("funcionario_telefone")
+}
+
+model ItensCompra {
+  idItensCompra       Int      @default(autoincrement())
+  quantidade          Int
+  precounitario       Float
+  Produtos_idprodutos Int
+  compras_idcompras   Int
+  produtos            Produtos @relation(fields: [Produtos_idprodutos], references: [idprodutos], onDelete: NoAction, onUpdate: NoAction, map: "fk_ItensCompra_Produtos1")
+  compras             Compras  @relation(fields: [compras_idcompras], references: [idcompras], onDelete: NoAction, onUpdate: NoAction, map: "fk_ItensCompra_compras1")
+
+  @@id([idItensCompra, Produtos_idprodutos, compras_idcompras])
+  @@index([Produtos_idprodutos], map: "fk_ItensCompra_Produtos1_idx")
+  @@index([compras_idcompras], map: "fk_ItensCompra_compras1_idx")
+  @@map("itens_compra")
+}
+
+model ItensVenda {
+  idItensVenda        Int      @default(autoincrement())
+  quantidade          Int
+  precounitario       Float
+  Produtos_idprodutos Int
+  Vendas_idVendas     Int
+  produtos            Produtos @relation(fields: [Produtos_idprodutos], references: [idprodutos], onDelete: NoAction, onUpdate: NoAction, map: "fk_ItensVenda_Produtos1")
+  vendas              Vendas   @relation(fields: [Vendas_idVendas], references: [idVendas], onDelete: NoAction, onUpdate: NoAction, map: "fk_ItensVenda_Vendas1")
+
+  @@id([idItensVenda, Produtos_idprodutos, Vendas_idVendas])
+  @@index([Produtos_idprodutos], map: "fk_ItensVenda_Produtos1_idx")
+  @@index([Vendas_idVendas], map: "fk_ItensVenda_Vendas1_idx")
+  @@map("itens_venda")
+}
+
+model Produtos {
+  idprodutos            Int           @unique @default(autoincrement())
+  nomeproduto           String        @db.VarChar(120)
+  Categoria_idCategoria Int
+  quantidade            Int
+  vencimento            DateTime      @db.Date
+  itenscompra           ItensCompra[]
+  itensvenda            ItensVenda[]
+  categoria             Categoria     @relation(fields: [Categoria_idCategoria], references: [idCategoria], onDelete: NoAction, onUpdate: NoAction, map: "fk_Produtos_Categoria1")
+
+  @@id([idprodutos, Categoria_idCategoria])
+  @@index([Categoria_idCategoria], map: "fk_Produtos_Categoria1_idx")
+  @@map("produtos")
+}
+
+model Vendas {
+  idVendas                    Int                      @unique @default(autoincrement())
+  datavenda                   DateTime                 @db.Date
+  Funcionarios_idFuncionarios Int
+  formasDePagamento           vendas_formasDePagamento
+  itensvenda                  ItensVenda[]
+  funcionarios                Funcionarios             @relation(fields: [Funcionarios_idFuncionarios], references: [idFuncionarios], onDelete: NoAction, onUpdate: NoAction, map: "fk_Vendas_Funcionarios1")
+
+  @@id([idVendas, Funcionarios_idFuncionarios])
+  @@index([Funcionarios_idFuncionarios], map: "fk_Vendas_Funcionarios1_idx")
+  @@map("vendas")
+}
+
+enum vendas_formasDePagamento {
+  Dinheiro
+  Pix
+  Credito
+  Debito
+}
