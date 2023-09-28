@@ -3,7 +3,7 @@ import { Response } from 'express';
 
 export class ProductsExceptionsFilter extends HttpException {
     constructor() {
-        super('unauthorized', 403)
+        super('unauthorized', 401)
     }
 }
 @Catch(HttpException)
