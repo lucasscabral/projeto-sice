@@ -36,7 +36,6 @@ export class ProductsService {
     await this.findOne(id).then((value) => {
       haveQuantityInStock = updateProductDto.quantity < value.quantidade;
     })
-    console.log("OIII")
 
     if (!haveQuantityInStock) {
       throw new ProductsExceptionsFilter()
