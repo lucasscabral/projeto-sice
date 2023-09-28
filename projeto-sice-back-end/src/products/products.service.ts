@@ -32,9 +32,11 @@ export class ProductsService {
 
   async retirarDoEstoque(id: number, updateProductDto: UpdateProductDto) {
     const dueDateFormated = dayjs(updateProductDto.dueDate).format()
+    let remainingStock = 0;
     let haveQuantityInStock: boolean;
     await this.findOne(id).then((value) => {
-      haveQuantityInStock = updateProductDto.quantity < value.quantidade;
+      remainingStock = value.quantidade - updateProductDto.quantity;
+      haveQuantityInStock = updateProductDto.quantity <= value.quantidade;
     })
 
     if (!haveQuantityInStock) {
@@ -43,7 +45,7 @@ export class ProductsService {
       return this.prismaService.produtos.update({
         where: { idprodutos: id }, data: {
           nomeproduto: updateProductDto.name,
-          quantidade: updateProductDto.quantity,
+          quantidade: remainingStock,
           vencimento: dueDateFormated,
           Categoria_idCategoria: updateProductDto.categoryId
         }
@@ -51,13 +53,17 @@ export class ProductsService {
     }
   }
 
-  reporEstoque(id: number, updateProductDto: UpdateProductDto) {
+  async reporEstoque(id: number, updateProductDto: UpdateProductDto) {
     const dueDateFormated = dayjs(updateProductDto.dueDate).format()
+    let addToStock: number;
+    await this.findOne(id).then((value) => {
+      addToStock = value.quantidade + updateProductDto.quantity;
+    })
 
     return this.prismaService.produtos.update({
       where: { idprodutos: id }, data: {
         nomeproduto: updateProductDto.name,
-        quantidade: updateProductDto.quantity,
+        quantidade: addToStock,
         vencimento: dueDateFormated,
         Categoria_idCategoria: updateProductDto.categoryId
       }
