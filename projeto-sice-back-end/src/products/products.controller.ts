@@ -1,9 +1,8 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, HttpCode, UseFilters, ExceptionFilter, HttpException } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, HttpCode, UseFilters } from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
-import { response } from 'express';
-import { HttpExceptionFilter, ProductsExceptionsFilter } from 'src/exceptions-filters/products.exceptions-filter';
+import { HttpExceptionFilter } from 'src/exceptions-filters/products.exceptions-filter';
 
 @Controller('produtos')
 export class ProductsController {
