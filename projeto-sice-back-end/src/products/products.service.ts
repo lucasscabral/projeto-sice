@@ -3,7 +3,7 @@ import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { PrismaService } from 'src/prisma/prisma/prisma.service';
 import * as dayjs from 'dayjs'
-import { ProductsExceptionsFilter } from 'src/exceptions-filters/products.exceptions-filter';
+import { HttpExceptionFilter, ProductsExceptionsFilter } from 'src/exceptions-filters/products.exceptions-filter';
 
 @Injectable()
 export class ProductsService {
@@ -70,7 +70,12 @@ export class ProductsService {
     });
   }
 
-  remove(id: number) {
-    return this.prismaService.produtos.delete({ where: { idprodutos: id } });
+  async remove(id: number) {
+    const existProduct = await this.prismaService.produtos.findUnique({ where: { idprodutos: id } });
+    if (!existProduct) {
+      throw new HttpExceptionFilter('Não existe produto com o id passado', 404);
+    } else {
+      return this.prismaService.produtos.delete({ where: { idprodutos: id } });
+    }
   }
 }
