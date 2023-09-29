@@ -69,7 +69,7 @@ model Funcionarios {
   nomefuncionario     String               @db.VarChar(200)
   endereco            String               @db.VarChar(500)
   Cargo_idCargo       Int
-  cpf                 String               @db.VarChar(11)
+  cpf                 String               @unique @db.VarChar(11)
   cargo               Cargo                @relation(fields: [Cargo_idCargo], references: [idCargo], onDelete: NoAction, onUpdate: NoAction, map: "fk_Funcionarios_Cargo1")
   funcionariotelefone FuncionarioTelefone?
   vendas              Vendas[]
