@@ -24,6 +24,13 @@ export class ProductsController {
     return this.productsService.findOne(+id);
   }
 
+  @Patch(':id')
+  @UseFilters(HttpExceptionFilter)
+  editProduct(@Param('id') id: string, @Body() updateProductDto: UpdateProductDto) {
+    return this.productsService.editProduct(+id, updateProductDto);
+  }
+
+
   @Patch('retirar/:id')
   @UseFilters(HttpExceptionFilter)
   retirarDoEstoque(@Param('id') id: string, @Body() updateProductDto: UpdateProductDto) {
@@ -31,7 +38,6 @@ export class ProductsController {
   }
 
   @HttpCode(201)
-
   @Patch('repor/:id')
   reporEstoque(@Param('id') id: string, @Body() updateProductDto: UpdateProductDto) {
     return this.productsService.reporEstoque(+id, updateProductDto);
