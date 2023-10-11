@@ -1,20 +1,34 @@
+import { Transform } from "class-transformer";
 import { IsISO8601, IsNotEmpty, IsNumber, IsString, Min, MinLength } from "class-validator";
 
 export class CreateProductDto {
-    @IsNotEmpty()
-    @MinLength(5)
-    @IsString()
+    @IsNotEmpty({ message: "O nome não pode ser vázio" })
+    @MinLength(5, { message: "O nome dever um tamanho mínimo de 5 caracteres" })
+    @IsString({ message: "O nome dever ser alfabético" })
     name: string;
 
-    @IsNotEmpty()
-    @IsNumber()
+    @IsNotEmpty({ message: "O produto deve possuir uma categoria" })
+    @IsNumber({}, { message: "Deve possuir uma categoria" })
     categoryId: number;
 
-    @IsNotEmpty()
-    @IsNumber()
-    @Min(0)
+    @IsNotEmpty({ message: "A quantidade não pode ser vazia" })
+    @IsNumber({}, { message: "Deve ser um número" })
+    @Min(0, { message: "A quantidade deve ser maior ou igual a 0" })
+    @Transform(({ value }) => {
+        return parseInt(value)
+    })
     quantity: number;
 
-    @IsISO8601()
+    @IsNotEmpty({ message: "A quantidade não pode ser vazia e deve possuir '.' em vez de ','" })
+    @IsNumber({}, { message: "Deve ser um valor numérico" })
+    @Min(0, { message: "O valor deve ser maior que 0" })
+    @Transform(({ value }) => {
+        return parseFloat(value)
+    })
+    unitaryValue: number;
+
+    @IsISO8601({}, { message: "Deve possuir uma data" })
     dueDate: string;
+
+    description?: string;
 }
