@@ -16,7 +16,7 @@ export class PrismaExceptionFilter implements ExceptionFilter {
         } else if (exception.code === 'P2002') {
             return response.status(401).json({
                 statusCode: 401,
-                message: "Esse CPF já está em uso"
+                message: exception.message
             })
         } else if (exception.code === 'P2003') {
             return response.status(404).json({
