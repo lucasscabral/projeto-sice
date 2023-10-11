@@ -5,6 +5,8 @@ import { useQuery } from "react-query";
 import instance from "../../axios/instanceAxios";
 import { useState } from "react";
 import ButtonActions from "./buttonActions";
+import FormCreationProduct from "./forms/formCretionProduct";
+import { Loading } from "notiflix";
 
 const theme = createTheme({
     palette: {
@@ -18,8 +20,10 @@ const theme = createTheme({
 export default function IndexStock() {
     const [modification, setModification] = useState(false);
     const [rowSelected, setRowSelected] = useState(false);
-    const { data, isLoading, refetch } = useQuery("produtos", () => { return instance.get("/produtos").then((res) => res.data) })
-
+    const [open, setOpen] = useState(false);
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
+    const { data, isLoading, isSuccess, refetch } = useQuery("produtos", () => { return instance.get("/produtos").then((res) => res.data) })
     localStorage.setItem(
         "rowSelected",
         rowSelected ? JSON.stringify(rowSelected) : null
@@ -49,7 +53,7 @@ export default function IndexStock() {
         {
             field: "vencimento",
             headerName: "vencimento",
-            width: 160,
+            width: 200,
             disableClickEventBubbling: true,
         },
         {
@@ -66,7 +70,7 @@ export default function IndexStock() {
         },
         {
             headerName: "Ações",
-            width: 90,
+            width: 150,
             renderCell: (params) => (
                 <ButtonActions
                     {...{
@@ -85,17 +89,18 @@ export default function IndexStock() {
     ]
 
     if (isLoading) {
-        return <div>Carregando ...</div>
-    }
+        return Loading.standard("Carregando...")
+    } else if (isSuccess) Loading.remove()
 
     return (
         <ThemeProvider theme={theme}>
             <Box marginTop={15} paddingLeft={10} paddingRight={10} sx={{ width: "100%" }}>
                 <Cabecalho>
                     <Typography variant="h4" sx={{ fontWeight: "bold" }}>ESTOQUE</ Typography>
-                    <Button variant="contained" size="large" color="info" sx={{ fontWeight: "bold" }}>+ Adicionar</Button>
+                    <Button variant="contained" size="large" color="info" sx={{ fontWeight: "bold" }} onClick={handleOpen}>+ Adicionar</Button>
                 </Cabecalho>
                 <TableUtils dataContent={data} columns={columns} setRowSelected={setRowSelected} />
+                {open ? <FormCreationProduct open={open} handleClose={handleClose} refetch={refetch} /> : null}
             </Box>
         </ThemeProvider>
     )
