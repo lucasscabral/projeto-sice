@@ -15,6 +15,7 @@
     "@mui/icons-material": "^5.14.11",
     "@mui/material": "^5.14.11",
     "@mui/x-data-grid": "^6.16.0",
+    "@nestjs/mapped-types": "*",
     "axios": "^1.5.1",
     "material-ui-popup-state": "^5.0.9",
     "notiflix": "^3.2.6",
