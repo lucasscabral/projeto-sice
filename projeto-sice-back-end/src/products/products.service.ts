@@ -15,19 +15,36 @@ export class ProductsService {
     return this.prismaService.produtos.create({
       data: {
         nomeproduto: createProductDto.name,
-        quantidade: createProductDto.quantity,
+        quantidade: +createProductDto.quantity,
         vencimento: dueDateFormated,
-        Categoria_idCategoria: createProductDto.categoryId
+        valor_unitario: +createProductDto.unitaryValue,
+        Categoria_idCategoria: createProductDto.categoryId,
+        descricao: createProductDto.description
       }
     })
   }
 
   findAll() {
-    return this.prismaService.produtos.findMany();
+    return this.prismaService.produtos.findMany({ include: { categoria: true } });
   }
 
   findOne(id: number) {
     return this.prismaService.produtos.findUniqueOrThrow({ where: { idprodutos: id } });
+  }
+
+  editProduct(id: number, updateProductDto: UpdateProductDto) {
+    const dueDateFormated = dayjs(updateProductDto.dueDate).format()
+    let replaceComma = updateProductDto.unitaryValue.toString().replace(",", ".")
+
+    return this.prismaService.produtos.update({
+      where: { idprodutos: id }, data: {
+        nomeproduto: updateProductDto.name,
+        quantidade: +updateProductDto.quantity,
+        vencimento: dueDateFormated,
+        valor_unitario: +replaceComma,
+        Categoria_idCategoria: updateProductDto.categoryId
+      }
+    })
   }
 
   async retirarDoEstoque(id: number, updateProductDto: UpdateProductDto) {
@@ -47,6 +64,7 @@ export class ProductsService {
           nomeproduto: updateProductDto.name,
           quantidade: remainingStock,
           vencimento: dueDateFormated,
+          valor_unitario: updateProductDto.unitaryValue,
           Categoria_idCategoria: updateProductDto.categoryId
         }
       });
@@ -54,7 +72,7 @@ export class ProductsService {
   }
 
   async reporEstoque(id: number, updateProductDto: UpdateProductDto) {
-    const dueDateFormated = dayjs(updateProductDto.dueDate).format()
+    const dueDateFormated = dayjs(updateProductDto.dueDate).format("YYYY-MM-DD")
     let addToStock: number;
     await this.findOne(id).then((value) => {
       addToStock = value.quantidade + updateProductDto.quantity;
@@ -65,6 +83,7 @@ export class ProductsService {
         nomeproduto: updateProductDto.name,
         quantidade: addToStock,
         vencimento: dueDateFormated,
+        valor_unitario: updateProductDto.unitaryValue,
         Categoria_idCategoria: updateProductDto.categoryId
       }
     });
