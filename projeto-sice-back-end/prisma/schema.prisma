@@ -17,8 +17,8 @@ model Cargo {
 
 model Categoria {
   idCategoria   Int        @id @default(autoincrement())
-  nomecategoria String     @db.VarChar(100)
-  descricao     String?    @db.VarChar(500)
+  nomecategoria String     @unique @db.VarChar(100)
+  descricao     String?    @default("Sem Descrição dessa Categoria") @db.VarChar(500)
   produtos      Produtos[]
 
   @@map("categoria")
@@ -122,7 +122,9 @@ model Produtos {
   nomeproduto           String        @db.VarChar(120)
   Categoria_idCategoria Int
   quantidade            Int
+  valor_unitario        Float
   vencimento            DateTime      @db.Date
+  descricao             String?       @default("Sem Descrição desse Produto") @db.VarChar(500)
   itenscompra           ItensCompra[]
   itensvenda            ItensVenda[]
   categoria             Categoria     @relation(fields: [Categoria_idCategoria], references: [idCategoria], onDelete: NoAction, onUpdate: NoAction, map: "fk_Produtos_Categoria1")
