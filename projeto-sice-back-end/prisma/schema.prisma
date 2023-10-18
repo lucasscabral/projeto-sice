@@ -105,7 +105,6 @@ model ItensCompra {
 model ItensVenda {
   idItensVenda        Int      @default(autoincrement())
   quantidade          Int
-  precounitario       Float
   Produtos_idprodutos Int
   Vendas_idVendas     Int
   produtos            Produtos @relation(fields: [Produtos_idprodutos], references: [idprodutos], onDelete: NoAction, onUpdate: NoAction, map: "fk_ItensVenda_Produtos1")
@@ -119,7 +118,7 @@ model ItensVenda {
 
 model Produtos {
   idprodutos            Int           @unique @default(autoincrement())
-  nomeproduto           String        @db.VarChar(120)
+  nomeproduto           String        @unique @db.VarChar(120)
   Categoria_idCategoria Int
   quantidade            Int
   valor_unitario        Float
@@ -136,7 +135,7 @@ model Produtos {
 
 model Vendas {
   idVendas                    Int                      @unique @default(autoincrement())
-  datavenda                   DateTime                 @db.Date
+  datavenda                   DateTime?                @default(now()) @db.Date
   Funcionarios_idFuncionarios Int
   formasDePagamento           vendas_formasDePagamento
   itensvenda                  ItensVenda[]
