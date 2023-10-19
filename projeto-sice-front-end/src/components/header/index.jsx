@@ -25,7 +25,8 @@ const AppBar = styled(MuiAppBar, {
     }),
 }));
 
-export default function IndexHeader() {
+export default function IndexHeader(props) {
+
     return (
         <>
             <CssBaseline />
@@ -38,6 +39,7 @@ export default function IndexHeader() {
                     <div>lOGIN</div>
                 </Toolbar>
             </AppBar>
+            {props.children}
         </>
     );
 }
