@@ -56,8 +56,9 @@ function CustomNoRowsOverlay() {
 
 export default function TableUtils({ dataContent, columns, setRowSelected }) {
     return (
-        <Box sx={{ height: 760, width: 1, marginTop: 5 }}>
+        <Box sx={{ width: 1, marginTop: 5 }}>
             <DataGrid
+                autoHeight
                 sx={{ p: 3 }}
                 getRowId={(rows) => rows.idprodutos}
                 columns={columns}

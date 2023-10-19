@@ -1,20 +1,25 @@
 import { useState } from 'react'
 import IndexHeader from './components/header'
-import { BrowserRouter, Router, Route, Routes } from 'react-router-dom'
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import IndexStock from './components/stock/indexStock'
 import Notiflix from 'notiflix'
+import IndexBox from './components/box/indexBox'
+import IndexSingIn from './components/auth/singin/indexSingIn'
+import IndexAuth from './components/auth/indexAuth'
+import IndexSingnUp from './components/auth/singup/indexSingUp'
 
 
 function App() {
-  const [count, setCount] = useState(0)
 
   return (
     <>
       <BrowserRouter >
-        <IndexHeader />
         <Routes>
-          <Route path='/home' element={<div>Home</div>} />
-          <Route path='/estoque' element={<IndexStock />} />
+          <Route path='/' element={<IndexAuth> <IndexSingIn /></IndexAuth>} />
+          <Route path='/singnUp' element={<IndexAuth><IndexSingnUp /></IndexAuth>} />
+          <Route path='/home' element={<IndexHeader><div>Home</div></IndexHeader>} />
+          <Route path='/caixa' element={<IndexHeader> <IndexBox /></IndexHeader>} />
+          <Route path='/estoque' element={<IndexHeader><IndexStock /></IndexHeader>} />
         </Routes>
       </BrowserRouter>
     </>

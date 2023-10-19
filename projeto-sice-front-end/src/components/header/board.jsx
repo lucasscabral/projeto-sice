@@ -20,7 +20,7 @@ export default function MenuPopupState() {
                     </Button>
                     <Menu {...bindMenu(popupState)}>
                         <MenuItem onClick={popupState.close}><HomeOutlinedIcon sx={{ marginRight: "5px", fontSize: "35px" }} /><Link to={"/home"} style={{ textDecoration: "none", color: "black" }}><Typography variant='h6'> Home</Typography> </Link> </MenuItem>
-                        <MenuItem onClick={popupState.close}><ShoppingCartOutlinedIcon sx={{ marginRight: "5px", fontSize: "35px" }} /><Link style={{ textDecoration: "none", color: "black" }}><Typography variant='h6'>Caixa</Typography></Link></MenuItem>
+                        <MenuItem onClick={popupState.close}><ShoppingCartOutlinedIcon sx={{ marginRight: "5px", fontSize: "35px" }} /><Link to={"/caixa"} style={{ textDecoration: "none", color: "black" }}><Typography variant='h6'>Caixa</Typography></Link></MenuItem>
                         <MenuItem onClick={popupState.close}><Inventory2OutlinedIcon sx={{ marginRight: "5px", fontSize: "35px" }} /><Link to={"/estoque"} style={{ textDecoration: "none", color: "black" }}><Typography variant='h6'>Estoque</Typography></Link></MenuItem>
                     </Menu>
                 </React.Fragment>

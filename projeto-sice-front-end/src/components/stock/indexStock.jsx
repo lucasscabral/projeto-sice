@@ -7,6 +7,7 @@ import { useState } from "react";
 import ButtonActions from "./buttonActions";
 import FormCreationProduct from "./forms/formCretionProduct";
 import { Loading } from "notiflix";
+import * as dayjs from "dayjs";
 
 const theme = createTheme({
     palette: {
@@ -24,10 +25,12 @@ export default function IndexStock() {
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
     const { data, isLoading, isSuccess, refetch } = useQuery("produtos", () => { return instance.get("/produtos").then((res) => res.data) })
+
     localStorage.setItem(
         "rowSelected",
         rowSelected ? JSON.stringify(rowSelected) : null
     );
+
     const columns = [
         {
             field: "idprodutos",
@@ -55,6 +58,7 @@ export default function IndexStock() {
             headerName: "vencimento",
             width: 200,
             disableClickEventBubbling: true,
+            valueGetter: (params) => dayjs(params?.row.vencimento).format('DD/MM/YYYY')
         },
         {
             field: "quantidade",
