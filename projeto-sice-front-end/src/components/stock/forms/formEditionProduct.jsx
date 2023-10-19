@@ -78,7 +78,7 @@ export default function FormEditionProduct({ openFormEdit, handleCloseFormEdit, 
                 <Box sx={style}>
                     <div style={{ width: "100%", display: "flex", marginBottom: 25 }}>
                         <CloseIcon sx={{ fontSize: 40, cursor: "pointer" }} onClick={handleCloseFormEdit} />
-                        <Typography fontWeight={"bold"} fontSize={35} marginLeft={25}>Cadastrar Produtos</Typography>
+                        <Typography fontWeight={"bold"} fontSize={35} marginLeft={25}>Editar Produto de Codº {rowId}</Typography>
                     </div>
                     <div style={{ width: "100%", display: "flex", justifyContent: "space-between", marginBottom: 25 }}>
                         <TextField
