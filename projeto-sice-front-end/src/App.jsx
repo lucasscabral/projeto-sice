@@ -7,6 +7,7 @@ import IndexBox from './components/box/indexBox'
 import IndexSingIn from './components/auth/singin/indexSingIn'
 import IndexAuth from './components/auth/indexAuth'
 import IndexSingnUp from './components/auth/singup/indexSingUp'
+import IndexHome from './components/home/indexHome'
 
 
 function App() {
@@ -17,7 +18,7 @@ function App() {
         <Routes>
           <Route path='/' element={<IndexAuth> <IndexSingIn /></IndexAuth>} />
           <Route path='/singnUp' element={<IndexAuth><IndexSingnUp /></IndexAuth>} />
-          <Route path='/home' element={<IndexHeader><div>Home</div></IndexHeader>} />
+          <Route path='/home' element={<IndexHeader><IndexHome /></IndexHeader>} />
           <Route path='/caixa' element={<IndexHeader> <IndexBox /></IndexHeader>} />
           <Route path='/estoque' element={<IndexHeader><IndexStock /></IndexHeader>} />
         </Routes>
