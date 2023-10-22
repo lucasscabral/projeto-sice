@@ -2,9 +2,11 @@ import { IsArray, IsEnum, IsNotEmpty, ValidateNested } from "class-validator";
 import { CreateSaleDto } from "./create-sale.dto";
 import { Type } from "class-transformer";
 
-enum FormaPagament {
-    Pix = "Pix",
-    Dinheiro = "Dinheiro"
+export enum FormaPagament {
+    Pix = 'Pix',
+    Dinheiro= 'Dinheiro',
+    Credito = 'Credito',
+    Debito = 'Debito'
 }
 
 export class CreateSaleInfoDto {
@@ -15,5 +17,5 @@ export class CreateSaleInfoDto {
 
     @IsNotEmpty()
     @IsEnum(FormaPagament)
-    formaPagamento: string
+    formaPagamento: FormaPagament
 }
