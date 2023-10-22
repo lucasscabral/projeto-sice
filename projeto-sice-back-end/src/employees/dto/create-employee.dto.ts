@@ -1,20 +1,23 @@
-import { IsNotEmpty, IsNumber, IsString, Validate } from "class-validator";
+import { IsNotEmpty, IsOptional, IsString, Length, Validate } from "class-validator";
 import { ValidadeCpf } from "../validators/validateCpf";
 
 export class CreateEmployeeDto {
-    @IsString()
-    @IsNotEmpty()
-    nomefuncionario: string;
+    @IsNotEmpty({message:"Funcionário deve possuir um nome"})
+    @IsString({message:"Nome do funcionário não pode ser um número"})
+    @Length(4)
+    nomefuncionario:string
 
-    @IsString()
-    endereco: string;
+    @IsNotEmpty({message:"Funcionário deve possuir um endereço"})
+    endereco:string
 
-    @IsNumber()
-    @IsNotEmpty()
-    Cargo_idCargo: number;
+    @IsNotEmpty({message:"O funcionário deve possuir um cargo"})
+    Cargo_idCargo:number
 
     @Validate(ValidadeCpf)
+    @IsNotEmpty({message:"CPF não pode ser vazio"})
     @IsString()
-    @IsNotEmpty()
-    cpf: string;
+    cpf:string
+
+    @IsOptional()
+    funcionariotelefone?:string
 }
