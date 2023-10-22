@@ -2,14 +2,20 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { EmployeesService } from './employees.service';
 import { CreateEmployeeDto } from './dto/create-employee.dto';
 import { UpdateEmployeeDto } from './dto/update-employee.dto';
+import { LoginDto } from './dto/login.dto';
 
 @Controller('funcionario')
 export class EmployeesController {
   constructor(private employeesService: EmployeesService) { }
 
-  @Post()
+  @Post("signUp")
   create(@Body() createEmployeeDto: CreateEmployeeDto) {
     return this.employeesService.create(createEmployeeDto);
+  }
+
+  @Post("signIn")
+  signIn(@Body() signInDto: LoginDto){
+    return this.employeesService.signIn(signInDto);
   }
 
   @Get()
