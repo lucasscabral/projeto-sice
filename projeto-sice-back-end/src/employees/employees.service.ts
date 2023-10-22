@@ -3,26 +3,49 @@ import { CreateEmployeeDto } from './dto/create-employee.dto';
 import { UpdateEmployeeDto } from './dto/update-employee.dto';
 import { PrismaService } from 'src/prisma/prisma/prisma.service';
 import { HttpExceptionFilter } from 'src/exceptions-filters/employees.exceptions-filter';
+import { JwtService } from '@nestjs/jwt';
+import { UtilsExceptionFilter } from 'src/exceptions-filters/utils.exceptions-filter';
+import { LoginDto } from './dto/login.dto';
 
 @Injectable()
 export class EmployeesService {
-  constructor(private prismaService: PrismaService) { }
+  constructor(private prismaService: PrismaService,
+    private jwtService: JwtService) { }
 
   async create(createEmployeeDto: CreateEmployeeDto) {
     let transformCpf = createEmployeeDto.cpf.replaceAll(/[.|-]/g, "");
 
     const existPosition = await this.prismaService.cargo.findUnique({ where: { idCargo: createEmployeeDto.Cargo_idCargo } })
+    const existEmployee = await this.prismaService.funcionarios.findUnique({where:{cpf:transformCpf}})
 
-    if (existPosition) {
+    if(existEmployee){
+      throw new UtilsExceptionFilter("Esse usuário já existe!",401);
+    }else if (existPosition) {
       const [funcionarios] = await this.prismaService.$transaction([
         this.prismaService.funcionarios.create({
-          data: { ...createEmployeeDto, cpf: transformCpf }
+          data: { cpf: transformCpf,
+            Cargo_idCargo:existPosition.idCargo,
+            endereco:createEmployeeDto.endereco,
+            nomefuncionario:createEmployeeDto.nomefuncionario}
         })
       ])
       return funcionarios;
     } else {
       throw new HttpExceptionFilter('Essa categoria não existe', 404);
     }
+  }
+
+  async signIn(LoginDto: LoginDto){
+    let transformCpf = LoginDto.cpf.replaceAll(/[.|-]/g, "");
+    const user = await this.prismaService.funcionarios.findUnique({where:{cpf:transformCpf}});
+
+    if (!user) {
+      throw new UtilsExceptionFilter("Nome/CPF inválido!",401);
+    }
+    const payload = { id: user.idFuncionarios, nome: user.nomefuncionario };
+    return {
+      access_token: await this.jwtService.signAsync(payload),
+    };
   }
 
   findAll() {
@@ -47,7 +70,11 @@ export class EmployeesService {
       const [funcionarios] = await this.prismaService.$transaction([
         this.prismaService.funcionarios.update({
           where: { idFuncionarios: id },
-          data: { ...updateEmployeeDto, cpf: transformCpf }
+          data: { cpf: transformCpf,
+            Cargo_idCargo:existPosition.idCargo,
+            endereco:updateEmployeeDto.endereco,
+            nomefuncionario:updateEmployeeDto.nomefuncionario
+          }
         })
       ])
       return funcionarios;
