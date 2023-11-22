@@ -135,7 +135,7 @@ model Produtos {
 
 model Vendas {
   idVendas                    Int                      @unique @default(autoincrement())
-  datavenda                   DateTime?                @default(now()) @db.Date
+  datavenda                   DateTime?                @default(now())
   Funcionarios_idFuncionarios Int
   formasDePagamento           vendas_formasDePagamento
   itensvenda                  ItensVenda[]

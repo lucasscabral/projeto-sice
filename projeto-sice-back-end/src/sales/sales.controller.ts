@@ -1,15 +1,18 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete,UseGuards,Request } from '@nestjs/common';
 import { SalesService } from './sales.service';
 import { UpdateSaleDto } from './dto/update-sale.dto';
 import { CreateSaleInfoDto } from './dto/create-sale-info';
+import { EmployeeGuard } from 'src/employees/employees.guard';
 
 @Controller('venda')
 export class SalesController {
   constructor(private readonly salesService: SalesService) { }
 
+  @UseGuards(EmployeeGuard)
   @Post()
-  create(@Body() CreateSaleInfoDto: CreateSaleInfoDto) {
-    return this.salesService.create(CreateSaleInfoDto);
+  create(@Request() req ,@Body() CreateSaleInfoDto: CreateSaleInfoDto) {
+    const payload = req['user']
+    return this.salesService.create(CreateSaleInfoDto,payload);
   }
 
   @Get()

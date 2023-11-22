@@ -7,57 +7,53 @@ import ModalDeleteItem from "../modal/modalDeleteItem";
 import FormEditionProduct from "../form/formEditionProduct";
 
 export default function ButtonActions({
-    params,
-    productsSelected,
-    setProductsSelected
+  params,
+  productsSelected,
+  setProductsSelected,
 }) {
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
-    const [open, setOpen] = useState(false);
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
+  const [openFormEdit, setOpenFormEdit] = useState(false);
+  const handleOpenFormEdit = () => setOpenFormEdit(true);
+  const handleCloseFormEdit = () => setOpenFormEdit(false);
 
-    const [openFormEdit, setOpenFormEdit] = useState(false);
-    const handleOpenFormEdit = () => setOpenFormEdit(true);
-    const handleCloseFormEdit = () => setOpenFormEdit(false);
-
-    return (
-        <Stack direction="row" alignItems="center" spacing={0}>
-            <Tooltip title="Editar" onClick={handleOpenFormEdit}>
-                <IconButton aria-label="editar" size="medium" color="primary">
-                    <AiOutlineForm />
-                </IconButton>
-            </Tooltip>
-            <Tooltip title="Deletar">
-                <IconButton
-                    aria-label="deletar"
-                    size="medium"
-                    color="error"
-                    onClick={handleOpen}
-                >
-                    <DeleteIcon fontSize="inherit" />
-                </IconButton>
-            </Tooltip>
-            {open ? (
-                <ModalDeleteItem
-                    open={open}
-                    handleClose={handleClose}
-                    row={params?.row}
-                    productsSelected={productsSelected}
-                    setProductsSelected={setProductsSelected}
-                />
-            ) : null}
-            {openFormEdit ? (
-                <FormEditionProduct
-                    openFormEdit={openFormEdit}
-                    handleCloseFormEdit={handleCloseFormEdit}
-                    row={params?.row}
-                    productsSelected={productsSelected}
-                    setProductsSelected={setProductsSelected}
-                />
-            ) : null}
-        </Stack>
-    );
+  return (
+    <Stack direction="row" alignItems="center" spacing={0}>
+      <Tooltip title="Editar" onClick={handleOpenFormEdit}>
+        <IconButton aria-label="editar" size="medium" color="primary">
+          <AiOutlineForm />
+        </IconButton>
+      </Tooltip>
+      <Tooltip title="Deletar">
+        <IconButton
+          aria-label="deletar"
+          size="medium"
+          color="error"
+          onClick={handleOpen}
+        >
+          <DeleteIcon fontSize="inherit" />
+        </IconButton>
+      </Tooltip>
+      {open ? (
+        <ModalDeleteItem
+          open={open}
+          handleClose={handleClose}
+          row={params?.row}
+          productsSelected={productsSelected}
+          setProductsSelected={setProductsSelected}
+        />
+      ) : null}
+      {openFormEdit ? (
+        <FormEditionProduct
+          openFormEdit={openFormEdit}
+          handleCloseFormEdit={handleCloseFormEdit}
+          row={params?.row}
+          productsSelected={productsSelected}
+          setProductsSelected={setProductsSelected}
+        />
+      ) : null}
+    </Stack>
+  );
 }
-
-
-
