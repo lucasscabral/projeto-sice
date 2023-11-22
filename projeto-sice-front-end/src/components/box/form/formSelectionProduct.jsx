@@ -1,47 +1,59 @@
 import { useState } from "react";
-import { Autocomplete, Box, Button, Modal, TextField, ThemeProvider, Typography, createTheme } from "@mui/material";
-import { useQuery } from "react-query"
-import CloseIcon from '@mui/icons-material/Close';
-import CheckIcon from '@mui/icons-material/Check';
+import {
+  Autocomplete,
+  Box,
+  Button,
+  Modal,
+  TextField,
+  ThemeProvider,
+  Typography,
+  createTheme,
+} from "@mui/material";
+import { useQuery } from "react-query";
+import CloseIcon from "@mui/icons-material/Close";
+import CheckIcon from "@mui/icons-material/Check";
 import styled from "styled-components";
 import instance from "../../../axios/instanceAxios";
+import { mask } from "remask";
 
 const theme = createTheme({
   palette: {
     success: {
-      main: '#00A09D'
-    }
-  }
-})
+      main: "#00A09D",
+    },
+  },
+});
 const style = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
   width: 900,
-  bgcolor: 'background.paper',
-  border: '1px solid #000',
+  bgcolor: "background.paper",
+  border: "1px solid #000",
   boxShadow: 24,
   p: 4,
-  borderRadius: '5px'
+  borderRadius: "5px",
 };
 
-
-export default function FormSelectionProduct({ open, handleClose, productsSelected, setProductsSelected }) {
-  const { data } = useQuery("produtos", () => { return instance.get("produtos").then((res) => res.data) });
+export default function FormSelectionProduct({
+  open,
+  handleClose,
+  productsSelected,
+  setProductsSelected,
+}) {
+  const { data } = useQuery("produtos", () => {
+    return instance.get("/produtos").then((res) => res.data);
+  });
   const [quantity, setQuantity] = useState();
   const [productSelected, setProductSelected] = useState();
   function selectedProduct() {
     handleClose();
-    setProductsSelected([...productsSelected, { ...productSelected, quantidade: quantity }]);
+    setProductsSelected([
+      ...productsSelected,
+      { ...productSelected, quantidade: quantity },
+    ]);
   }
-
-  function handleFormatQuantity(event) {
-
-    setQuantity(event.target.value)
-
-  }
-
 
   return (
     <ThemeProvider theme={theme}>
@@ -53,10 +65,27 @@ export default function FormSelectionProduct({ open, handleClose, productsSelect
       >
         <Box sx={style}>
           <div style={{ width: "100%", display: "flex", marginBottom: 25 }}>
-            <CloseIcon sx={{ fontSize: 40, cursor: "pointer" }} onClick={handleClose} />
-            <Typography fontWeight={"bold"} fontSize={35} marginLeft={25}>Adicionar Produto</Typography>
+            <CloseIcon
+              sx={{ fontSize: 40, cursor: "pointer" }}
+              onClick={handleClose}
+            />
+            <Typography fontWeight={"bold"} fontSize={35} marginLeft={25}>
+              Adicionar Produto
+            </Typography>
           </div>
-          <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", border: "1px solid gray", marginBottom: 4, borderRadius: 1, padding: 5, width: "100%", height: 150 }}>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              border: "1px solid gray",
+              marginBottom: 4,
+              borderRadius: 1,
+              padding: 5,
+              width: "100%",
+              height: 150,
+            }}
+          >
             <Autocomplete
               disablePortal
               id="list-products"
@@ -67,31 +96,52 @@ export default function FormSelectionProduct({ open, handleClose, productsSelect
                 setProductSelected(newInputValue);
               }}
               sx={{ width: 300 }}
-              renderInput={(params) => <TextField {...params} label="Produtos" />}
+              renderInput={(params) => (
+                <TextField {...params} label="Produtos" />
+              )}
             />
             <TextField
               id="quantidade"
               label="Quantidade"
               variant="outlined"
-              type='number'
+              type="text"
               required
               sx={{ width: 200 }}
               value={quantity}
-              onChange={(event) => { setQuantity(event.target.value) }}
+              onChange={(event) => {
+                setQuantity(mask(event.target.value, "9999999999"));
+              }}
             />
           </Box>
           <ButtonsActions>
-            <Button variant="contained" color="error" size="large" onClick={handleClose}> X Cancelar</Button>
-            <Button variant="contained" color="success" disabled={!productSelected || !quantity ? true : false} size="large" onClick={selectedProduct}><CheckIcon /> Salvar</Button>
+            <Button
+              variant="contained"
+              color="error"
+              size="large"
+              onClick={handleClose}
+            >
+              {" "}
+              X Cancelar
+            </Button>
+            <Button
+              variant="contained"
+              color="success"
+              disabled={
+                !productSelected || !quantity || quantity <= 0 ? true : false
+              }
+              size="large"
+              onClick={selectedProduct}
+            >
+              <CheckIcon /> Salvar
+            </Button>
           </ButtonsActions>
         </Box>
       </Modal>
     </ThemeProvider>
-  )
+  );
 }
 
-
 const ButtonsActions = styled.div`
-    display: flex;
-    justify-content: space-between;
-`
+  display: flex;
+  justify-content: space-between;
+`;
