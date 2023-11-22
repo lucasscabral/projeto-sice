@@ -7,9 +7,10 @@ import { EmployeesModule } from './employees/employees.module';
 import { OfficeModule } from './office/office.module';
 import { CategoryModule } from './category/category.module';
 import { SalesModule } from './sales/sales.module';
+import { SuppliersModule } from './suppliers/suppliers.module';
 
 @Module({
-  imports: [ProductsModule, PrismaModule, EmployeesModule, OfficeModule, CategoryModule, SalesModule],
+  imports: [ProductsModule, PrismaModule, EmployeesModule, OfficeModule, CategoryModule, SalesModule, SuppliersModule],
   controllers: [AppController],
   providers: [AppService],
 })
