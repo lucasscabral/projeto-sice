@@ -22,7 +22,7 @@ export class EmployeesController {
   findAll() {
     return this.employeesService.findAll();
   }
-
+  
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.employeesService.findOne(+id);

@@ -37,14 +37,21 @@ export class EmployeesService {
 
   async signIn(LoginDto: LoginDto){
     let transformCpf = LoginDto.cpf.replaceAll(/[.|-]/g, "");
-    const user = await this.prismaService.funcionarios.findUnique({where:{cpf:transformCpf}});
+    const {idFuncionarios,nomefuncionario,cargo,funcionariotelefone} = await this.prismaService.funcionarios.findUnique({where:{cpf:transformCpf},include:{cargo:{select:{cargonome:true}},funcionariotelefone:{select:{telefonefuncionario:true}}}});
 
-    if (!user) {
+    if (!idFuncionarios) {
       throw new UtilsExceptionFilter("Nome/CPF inválido!",401);
     }
-    const payload = { id: user.idFuncionarios, nome: user.nomefuncionario };
+    const payload = { 
+      id: idFuncionarios, 
+      nome: nomefuncionario,
+      cargo:cargo.cargonome,
+      telefone:funcionariotelefone?funcionariotelefone.telefonefuncionario:"Não tem telefone cadastrado" 
+    };
+
     return {
       access_token: await this.jwtService.signAsync(payload),
+      payload
     };
   }
 
