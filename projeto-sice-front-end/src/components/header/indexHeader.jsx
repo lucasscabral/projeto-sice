@@ -5,7 +5,6 @@ import MuiAppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import MenuPopupState from "./board";
-import instance from "../../axios/instanceAxios";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { Tooltip } from "@mui/material";
 import { Link, Outlet } from "react-router-dom";
@@ -30,7 +29,7 @@ const AppBar = styled(MuiAppBar, {
 }));
 
 export default function IndexHeader() {
-  const { payload, setPayload } = useContext(useContextApi)
+  const { setPayload } = useContext(useContextApi)
   return (
     <>
       <CssBaseline />
