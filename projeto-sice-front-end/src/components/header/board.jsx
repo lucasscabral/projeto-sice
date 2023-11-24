@@ -20,48 +20,53 @@ export default function MenuPopupState() {
             <DensityMediumIcon sx={{ fontSize: "35px", color: "white" }} />
           </Button>
           <Menu {...bindMenu(popupState)}>
-            <MenuItem onClick={popupState.close}>
-              <HomeOutlinedIcon sx={{ marginRight: "5px", fontSize: "35px" }} />
-              <Link
-                to={"/home"}
-                style={{ textDecoration: "none", color: "black" }}
-              >
-                <Typography variant="h6"> Home</Typography>{" "}
-              </Link>{" "}
-            </MenuItem>
-            <MenuItem onClick={popupState.close}>
-              <ShoppingCartOutlinedIcon
-                sx={{ marginRight: "5px", fontSize: "35px" }}
-              />
-              <Link
-                to={"/caixa"}
-                style={{ textDecoration: "none", color: "black" }}
-              >
+            <Link
+              to={"/sice/home"}
+              style={{ display: "flex", textDecoration: "none", color: "black", width: "100%" }}
+            >
+              <MenuItem onClick={popupState.close} sx={{ width: "100%" }}>
+
+                <HomeOutlinedIcon sx={{ marginRight: "5px", fontSize: "35px" }} />
+                <Typography variant="h6"> Home</Typography>
+              </MenuItem>
+            </Link>
+
+            <Link
+              to={"/sice/caixa"}
+              style={{ display: "flex", textDecoration: "none", color: "black", width: "100%" }}
+            >
+              <MenuItem onClick={popupState.close} sx={{ width: "100%" }}>
+                <ShoppingCartOutlinedIcon
+                  sx={{ marginRight: "5px", fontSize: "35px" }}
+                />
                 <Typography variant="h6">Caixa</Typography>
-              </Link>
-            </MenuItem>
-            <MenuItem onClick={popupState.close}>
-              <Inventory2OutlinedIcon
-                sx={{ marginRight: "5px", fontSize: "35px" }}
-              />
-              <Link
-                to={"/estoque"}
-                style={{ textDecoration: "none", color: "black" }}
-              >
+              </MenuItem>
+            </Link>
+
+            <Link
+              to={"/sice/estoque"}
+              style={{ display: "flex", textDecoration: "none", color: "black", width: "100%" }}
+            >
+              <MenuItem onClick={popupState.close} sx={{ width: "100%" }}>
+
+                <Inventory2OutlinedIcon
+                  sx={{ marginRight: "5px", fontSize: "35px" }}
+                />
                 <Typography variant="h6">Estoque</Typography>
-              </Link>
-            </MenuItem>
-            <MenuItem onClick={popupState.close}>
-              <TbTruckDelivery size={37} />
-              <Link
-                to={"/fornecedores"}
-                style={{ textDecoration: "none", color: "black" }}
-              >
+              </MenuItem>
+            </Link>
+
+            <Link
+              to={"/sice/fornecedores"}
+              style={{ display: "flex", textDecoration: "none", color: "black", width: "100%" }}
+            >
+              <MenuItem onClick={popupState.close} sx={{ width: "100%" }}>
+                <TbTruckDelivery size={37} />
                 <Typography variant="h6" marginLeft={0.2}>
                   Fornecedores
                 </Typography>
-              </Link>
-            </MenuItem>
+              </MenuItem>
+            </Link>
           </Menu>
         </React.Fragment>
       )}
