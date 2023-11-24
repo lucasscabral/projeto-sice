@@ -26,7 +26,7 @@ model Categoria {
 
 model Compras {
   idcompras                 Int           @unique @default(autoincrement())
-  datacompra                DateTime      @db.Date
+  datacompra                DateTime      @default(now()) @db.Date
   Fornecedores_idfornecedor Int
   fornecedores              Fornecedores  @relation(fields: [Fornecedores_idfornecedor], references: [idfornecedor], onDelete: NoAction, onUpdate: NoAction, map: "fk_compras_Fornecedores1")
   itenscompra               ItensCompra[]
@@ -80,7 +80,7 @@ model Funcionarios {
 }
 
 model FuncionarioTelefone {
-  telefonefuncionario         String       @db.VarChar(14)
+  telefonefuncionario         String       @db.VarChar(16)
   Funcionarios_idFuncionarios Int          @id
   funcionarios                Funcionarios @relation(fields: [Funcionarios_idFuncionarios], references: [idFuncionarios], onDelete: NoAction, onUpdate: NoAction, map: "fk_FuncionarioTelefone_Funcionarios1")
 
