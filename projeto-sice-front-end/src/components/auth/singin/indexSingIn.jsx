@@ -12,7 +12,7 @@ const MASK_INPUT_CPF = ["999.999.999-99"];
 export default function IndexSingIn() {
   const [name, setName] = useState();
   const [cpf, setCpf] = useState();
-  const { setPayload } = useContext(useContextApi);
+  const { payload, setPayload } = useContext(useContextApi);
 
   const navigate = useNavigate();
 
@@ -28,10 +28,11 @@ export default function IndexSingIn() {
         .then((res) => res.data);
     },
     onSuccess: (data) => {
-      console.log(data);
       setPayload(data);
-      navigate("/home");
+      localStorage.setItem("token", JSON.stringify(payload.access_token))
+      navigate("/sice/home");
     },
+
     onError: (_) => {
       Notify.failure("NOME/CPF inválido!");
     },

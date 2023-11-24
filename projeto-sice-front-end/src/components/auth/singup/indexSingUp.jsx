@@ -70,7 +70,7 @@ export default function IndexSingnUp() {
     <Box
       sx={{
         gap: 5,
-        width: "50%",
+        width: "55%",
         borderRadius: "0 20px 20px 0",
         backgroundColor: "white",
         display: "flex",
