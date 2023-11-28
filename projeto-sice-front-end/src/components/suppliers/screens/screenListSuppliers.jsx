@@ -11,6 +11,7 @@ import instance from "../../../axios/instanceAxios";
 import { Loading } from "notiflix";
 import ReplyIcon from '@mui/icons-material/Reply';
 import { Link } from "react-router-dom";
+import { mask } from "remask";
 
 
 const theme = createTheme({
@@ -23,6 +24,8 @@ const theme = createTheme({
     },
   },
 });
+
+const MASK_CNPJ = ["99.999.999/0001-99"];
 
 export default function ScreenListSuppliers() {
   const { data, isLoading, isSuccess } = useQuery("fornecedores", () => { return instance.get("/fornecedores").then((res) => res.data) });
@@ -52,6 +55,10 @@ export default function ScreenListSuppliers() {
       headerName: "CNPJ",
       width: 150,
       disableClickEventBubbling: true,
+      valueGetter: (params) => {
+
+        return `${mask(params?.row.CNPJ, MASK_CNPJ)}`;
+      }
     }
   ];
 

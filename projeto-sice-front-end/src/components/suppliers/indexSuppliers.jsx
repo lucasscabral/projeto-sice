@@ -51,19 +51,18 @@ export default function IndexSuppliers() {
             flexDirection: "column",
           }}
         >
-          <Button
-            variant="contained"
-            size="large"
-            color="info"
-            sx={{ fontWeight: "bold", width: 250, height: 50 }}
+          <Link
+            to={"lista"}
           >
-            <Link
-              to={"lista"}
-              style={{ textDecoration: "none", color: "white", width: "100%" }}
+            <Button
+              variant="contained"
+              size="large"
+              color="info"
+              sx={{ fontWeight: "bold", width: 250, height: 50 }}
             >
               Fornecedores
-            </Link>
-          </Button>
+            </Button>
+          </Link>
           <Button
             variant="contained"
             size="large"
@@ -73,7 +72,7 @@ export default function IndexSuppliers() {
           >
             Cadastrar Novo Fornecedor
           </Button>
-          <Link to={"/sice/fornecedores/registra-compras"} style={{ width: "100%" }}>
+          <Link to={"/sice/fornecedores/registra-compras"}>
             <Button
               variant="contained"
               size="large"
@@ -83,24 +82,28 @@ export default function IndexSuppliers() {
               Registrar Compra
             </Button>
           </Link>
-          <Link to={"/sice/fornecedores/lista-compras"} style={{ width: "100%" }}>
+          <Link to={"/sice/fornecedores/lista-compras"}>
             <Button
               variant="contained"
               size="large"
               color="info"
               sx={{ fontWeight: "bold", width: 250, height: 50 }}
             >
+
               Listagem de Compras
+
             </Button>
           </Link>
         </Box>
       </Box>
-      {openModalCreateSupplier ? (
-        <FormCreateSupplier
-          openModalCreateSupplier={openModalCreateSupplier}
-          handleCloseModalCreateSupplier={handleCloseModalCreateSupplier}
-        />
-      ) : null}
-    </ThemeProvider>
+      {
+        openModalCreateSupplier ? (
+          <FormCreateSupplier
+            openModalCreateSupplier={openModalCreateSupplier}
+            handleCloseModalCreateSupplier={handleCloseModalCreateSupplier}
+          />
+        ) : null
+      }
+    </ThemeProvider >
   );
 }
