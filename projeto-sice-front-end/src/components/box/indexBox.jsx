@@ -104,10 +104,10 @@ export default function IndexBox() {
       setProductsSelected(rechargeBox);
     },
     onError: (error) => {
-      if (error.response.status === 401) {
-        return Notify.failure(`O funcionário deve estar logado no sistema`)
-      } else {
+      if (error.response.data.message !== "Unauthorized") {
         Notify.failure(`${error.response.data.message}`);
+      } else {
+        return Notify.failure(`O funcionário deve estar logado no sistema`)
       }
     },
   });
@@ -228,7 +228,7 @@ export default function IndexBox() {
             <Button
               variant="contained"
               color="success"
-              disabled={!productsSelected[0] ? true : false}
+              disabled={!productsSelected[0] || !amountToPay ? true : false}
               size="large"
               onClick={() => mutation.mutate()}
             >

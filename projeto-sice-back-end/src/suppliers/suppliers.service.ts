@@ -107,12 +107,21 @@ export class SuppliersService {
     if (purscherSupplier.compras.length === 0) {
       return []
     }
-    const objectFilter = {}
-    const arrayFilter = purscherSupplier.compras[0].itenscompra.filter((value) => {
-      return objectFilter.hasOwnProperty(value.produtos.idprodutos) ? false : (objectFilter[value.produtos.idprodutos] = true)
-    });
 
-    return arrayFilter
+    const objectFilterProduct = {}
+
+    purscherSupplier.compras.filter((value, i) => {
+      if (value.itenscompra.length > 0) {
+        value.itenscompra.filter((value) => {
+          return objectFilterProduct.hasOwnProperty(value.produtos.idprodutos) ? false : (objectFilterProduct[value.produtos.idprodutos] = value.produtos)
+        })
+      }
+
+    })
+
+    const arrayFilterProducts = Object.values(objectFilterProduct).map(value => value)
+
+    return arrayFilterProducts
   }
 
   update(id: number, updateSupplierDto: UpdateSupplierDto) {
