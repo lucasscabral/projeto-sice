@@ -29,7 +29,6 @@ export default function IndexSingIn() {
     },
     onSuccess: (data) => {
       setPayload(data);
-      localStorage.setItem("token", JSON.stringify(payload.access_token))
       navigate("/sice/home");
     },
 
