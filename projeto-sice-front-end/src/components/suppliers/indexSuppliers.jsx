@@ -59,7 +59,7 @@ export default function IndexSuppliers() {
           >
             <Link
               to={"lista"}
-              style={{ textDecoration: "none", color: "white" }}
+              style={{ textDecoration: "none", color: "white", width: "100%" }}
             >
               Fornecedores
             </Link>
@@ -71,24 +71,28 @@ export default function IndexSuppliers() {
             sx={{ fontWeight: "bold", width: 250, height: 50 }}
             onClick={handleOpenModalCreateSupplier}
           >
-            Cadastrar Novo Fornecedores
+            Cadastrar Novo Fornecedor
           </Button>
-          <Button
-            variant="contained"
-            size="large"
-            color="info"
-            sx={{ fontWeight: "bold", width: 250, height: 50 }}
-          >
-            Registrar Compra
-          </Button>
-          <Button
-            variant="contained"
-            size="large"
-            color="info"
-            sx={{ fontWeight: "bold", width: 250, height: 50 }}
-          >
-            Listagem de Compras
-          </Button>
+          <Link to={"/sice/fornecedores/registra-compras"} style={{ width: "100%" }}>
+            <Button
+              variant="contained"
+              size="large"
+              color="info"
+              sx={{ fontWeight: "bold", width: 250, height: 50 }}
+            >
+              Registrar Compra
+            </Button>
+          </Link>
+          <Link to={"/sice/fornecedores/lista-compras"} style={{ width: "100%" }}>
+            <Button
+              variant="contained"
+              size="large"
+              color="info"
+              sx={{ fontWeight: "bold", width: 250, height: 50 }}
+            >
+              Listagem de Compras
+            </Button>
+          </Link>
         </Box>
       </Box>
       {openModalCreateSupplier ? (

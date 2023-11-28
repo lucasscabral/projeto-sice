@@ -1,6 +1,6 @@
 import {
   Box,
-  Divider,
+  Button,
   ThemeProvider,
   Typography,
   createTheme,
@@ -8,6 +8,10 @@ import {
 import TableSuppliers from "../tables/tableSuppliers";
 import { useQuery } from "react-query";
 import instance from "../../../axios/instanceAxios";
+import { Loading } from "notiflix";
+import ReplyIcon from '@mui/icons-material/Reply';
+import { Link } from "react-router-dom";
+
 
 const theme = createTheme({
   palette: {
@@ -21,14 +25,15 @@ const theme = createTheme({
 });
 
 export default function ScreenListSuppliers() {
-  const { data, error, refetch } = useQuery("fornecedores", () => {
-    return instance.get("/fornecedores").then((res) => {
-      console.log(res);
-      return res.data;
-    });
-  });
-  console.log(data);
-  console.log(error);
+  const { data, isLoading, isSuccess } = useQuery("fornecedores", () => { return instance.get("/fornecedores").then((res) => res.data) });
+
+  if (isLoading) {
+    return Loading.standard("Carregando...")
+  } else if (isSuccess) {
+    Loading.remove()
+  }
+
+
   const columns = [
     {
       field: "idfornecedor",
@@ -47,25 +52,7 @@ export default function ScreenListSuppliers() {
       headerName: "CNPJ",
       width: 150,
       disableClickEventBubbling: true,
-    },
-    {
-      headerName: "Ações",
-      width: 150,
-      //   renderCell: (params) => (
-      //     <ButtonActions
-      //       {...{
-      //         params,
-      //         refetch,
-      //         modification,
-      //         setModification,
-      //       }}
-      //     />
-      //   ),
-
-      sortable: false,
-      filterable: false,
-      disableClickEventBubbling: true,
-    },
+    }
   ];
 
   return (
@@ -79,9 +66,13 @@ export default function ScreenListSuppliers() {
         <Typography variant="h4" fontWeight={"bold"}>
           Lista de Fornecedores
         </Typography>
-        <Divider variant="fullWidth" color="#232723" sx={{ marginTop: 2 }} />
 
-        <TableSuppliers rows={data} columns={columns} />
+        <TableSuppliers dataContent={data} columns={columns} />
+        <Link to={"/sice/fornecedores"}>
+          <Button variant="contained" size="large" color="error" sx={{ textAlign: "center", marginTop: 10 }} >
+            <ReplyIcon sx={{ marginRight: 1, fontSize: "30px" }} /> Voltar
+          </Button>
+        </Link>
       </Box>
     </ThemeProvider>
   );
