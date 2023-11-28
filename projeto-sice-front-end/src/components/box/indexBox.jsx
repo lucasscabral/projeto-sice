@@ -94,7 +94,7 @@ export default function IndexBox() {
         {
           headers:
           {
-            'Authorization': `Bearer ${payload.access_token}`
+            'Authorization': `Bearer ${payload?.access_token}`
           }
         }).then((res) => res.data);
     },
@@ -104,7 +104,11 @@ export default function IndexBox() {
       setProductsSelected(rechargeBox);
     },
     onError: (error) => {
-      Notify.failure(`${error.response.data.message}`);
+      if (error.response.status === 401) {
+        return Notify.failure(`O funcionário deve estar logado no sistema`)
+      } else {
+        Notify.failure(`${error.response.data.message}`);
+      }
     },
   });
 
