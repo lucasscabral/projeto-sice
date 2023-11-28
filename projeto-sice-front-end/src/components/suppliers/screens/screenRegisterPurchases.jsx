@@ -114,7 +114,7 @@ export default function ScreenRegisterPurchases() {
     }, [supplier])
 
     function addListShopping() {
-        setProductsOnTheShoppingList([...productsOnTheShoppingList, { ...selectedProductFromSupplier.produtos, quantidade: +quantity }])
+        setProductsOnTheShoppingList([...productsOnTheShoppingList, { ...selectedProductFromSupplier, quantidade: +quantity }])
     }
 
 
@@ -148,7 +148,7 @@ export default function ScreenRegisterPurchases() {
                                         setSelectedProductFromSupplier(newValue);
                                     }}
                                     options={productsSupplier}
-                                    getOptionLabel={(option) => option.produtos.nomeproduto}
+                                    getOptionLabel={(option) => option?.nomeproduto}
                                     noOptionsText="Produto não encontrado"
                                     sx={{ width: 200 }}
                                     renderInput={(params) => <TextField {...params} label="Produtos" />}
