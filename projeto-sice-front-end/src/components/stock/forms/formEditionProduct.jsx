@@ -31,7 +31,6 @@ export default function FormEditionProduct({ openFormEdit, handleCloseFormEdit, 
     const { data } = useQuery("categorias", () => { return instance.get("categoria").then((res) => res.data) })
     const [categorie, setCategorie] = useState([]);
     const [name, setName] = useState('');
-    const [quantity, setQuantity] = useState('');
     const [dueDate, setDueDate] = useState('');
     const [unitaryValue, setUnitaryValue] = useState('');
     const [description, setDescription] = useState();
@@ -41,7 +40,6 @@ export default function FormEditionProduct({ openFormEdit, handleCloseFormEdit, 
             const dataProduct = {
                 name,
                 categoryId: categorie.length > 0 ? categorie[0]?.idCategoria : "",
-                quantity,
                 dueDate,
                 unitaryValue,
                 description
@@ -90,16 +88,6 @@ export default function FormEditionProduct({ openFormEdit, handleCloseFormEdit, 
                             value={name}
                             onChange={(event) => {
                                 setName(event.target.value);
-                            }} />
-                        <TextField
-                            id="outlined-basic"
-                            type="number"
-                            required
-                            label="Quantidade"
-                            variant="outlined"
-                            value={quantity}
-                            onChange={(event) => {
-                                setQuantity(event.target.value);
                             }} />
                     </div>
                     <div style={{ width: "100%", display: "flex", flexDirection: "column", marginBottom: 20, gap: 20 }}>

@@ -28,7 +28,8 @@
     "react-query": "^3.39.3",
     "react-router-dom": "^6.16.0",
     "remask": "^1.2.2",
-    "styled-components": "^6.0.8"
+    "styled-components": "^6.0.8",
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
     "@types/react": "^18.2.15",

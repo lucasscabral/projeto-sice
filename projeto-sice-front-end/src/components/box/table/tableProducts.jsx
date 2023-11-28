@@ -27,6 +27,7 @@ export default function TableProducts({ rows, columns }) {
         autoHeight
         rows={rows}
         columns={columns}
+        key={rows.idprodutos}
         getRowId={(rows) => rows.idprodutos}
         disableRowSelectionOnClick
         disableColumnMenu

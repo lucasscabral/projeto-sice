@@ -2,19 +2,30 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { SuppliersService } from './suppliers.service';
 import { CreateSupplierDto } from './dto/create-supplier.dto';
 import { UpdateSupplierDto } from './dto/update-supplier.dto';
+import { CreatePurchasesDto } from './dto/create-purchasesdto';
 
 @Controller('fornecedores')
 export class SuppliersController {
-  constructor(private readonly suppliersService: SuppliersService) {}
+  constructor(private readonly suppliersService: SuppliersService) { }
 
   @Post()
   create(@Body() createSupplierDto: CreateSupplierDto) {
     return this.suppliersService.create(createSupplierDto);
   }
 
+  @Post("registrar-compras")
+  registerPurchases(@Body() createPurchasesDto: CreatePurchasesDto) {
+    this.suppliersService.registerPurchases(createPurchasesDto);
+  }
+
   @Get()
   findAll() {
     return this.suppliersService.findAll();
+  }
+
+  @Get("lista-compras")
+  findAllPurchase() {
+    return this.suppliersService.findAllPurchase();
   }
 
   @Get(':id')

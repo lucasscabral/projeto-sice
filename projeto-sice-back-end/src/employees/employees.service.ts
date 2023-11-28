@@ -16,17 +16,23 @@ export class EmployeesService {
     let transformCpf = createEmployeeDto.cpf.replaceAll(/[.|-]/g, "");
 
     const existPosition = await this.prismaService.cargo.findUnique({ where: { idCargo: createEmployeeDto.Cargo_idCargo } })
-    const existEmployee = await this.prismaService.funcionarios.findUnique({where:{cpf:transformCpf}})
 
-    if(existEmployee){
-      throw new UtilsExceptionFilter("Esse usuário já existe!",401);
-    }else if (existPosition) {
+    const existEmployee = await this.prismaService.funcionarios.findUnique({ where: { cpf: transformCpf } })
+
+    if (existEmployee) {
+      throw new UtilsExceptionFilter("Esse usuário já existe!", 401);
+    } else if (existPosition) {
       const [funcionarios] = await this.prismaService.$transaction([
         this.prismaService.funcionarios.create({
-          data: { cpf: transformCpf,
-            Cargo_idCargo:existPosition.idCargo,
-            endereco:createEmployeeDto.endereco,
-            nomefuncionario:createEmployeeDto.nomefuncionario}
+          data: {
+            cpf: transformCpf,
+            Cargo_idCargo: existPosition.idCargo,
+            endereco: createEmployeeDto.endereco,
+            nomefuncionario: createEmployeeDto.nomefuncionario,
+            funcionariotelefone: {
+              create: { telefonefuncionario: createEmployeeDto.funcionariotelefone ? createEmployeeDto.funcionariotelefone : "Não tem telefone cadastrado" }
+            }
+          }
         })
       ])
       return funcionarios;
@@ -35,18 +41,18 @@ export class EmployeesService {
     }
   }
 
-  async signIn(LoginDto: LoginDto){
+  async signIn(LoginDto: LoginDto) {
     let transformCpf = LoginDto.cpf.replaceAll(/[.|-]/g, "");
-    const {idFuncionarios,nomefuncionario,cargo,funcionariotelefone} = await this.prismaService.funcionarios.findUnique({where:{cpf:transformCpf},include:{cargo:{select:{cargonome:true}},funcionariotelefone:{select:{telefonefuncionario:true}}}});
+    const { idFuncionarios, nomefuncionario, cargo, funcionariotelefone } = await this.prismaService.funcionarios.findUnique({ where: { cpf: transformCpf, AND: { nomefuncionario: LoginDto.nomefuncionario } }, include: { cargo: { select: { cargonome: true } }, funcionariotelefone: { select: { telefonefuncionario: true } } } });
 
     if (!idFuncionarios) {
-      throw new UtilsExceptionFilter("Nome/CPF inválido!",401);
+      throw new UtilsExceptionFilter("Nome/CPF inválido!", 401);
     }
-    const payload = { 
-      id: idFuncionarios, 
+    const payload = {
+      id: idFuncionarios,
       nome: nomefuncionario,
-      cargo:cargo.cargonome,
-      telefone:funcionariotelefone?funcionariotelefone.telefonefuncionario:"Não tem telefone cadastrado" 
+      cargo: cargo.cargonome,
+      telefone: funcionariotelefone ? funcionariotelefone.telefonefuncionario : "Não tem telefone cadastrado"
     };
 
     return {
@@ -77,10 +83,11 @@ export class EmployeesService {
       const [funcionarios] = await this.prismaService.$transaction([
         this.prismaService.funcionarios.update({
           where: { idFuncionarios: id },
-          data: { cpf: transformCpf,
-            Cargo_idCargo:existPosition.idCargo,
-            endereco:updateEmployeeDto.endereco,
-            nomefuncionario:updateEmployeeDto.nomefuncionario
+          data: {
+            cpf: transformCpf,
+            Cargo_idCargo: existPosition.idCargo,
+            endereco: updateEmployeeDto.endereco,
+            nomefuncionario: updateEmployeeDto.nomefuncionario
           }
         })
       ])

@@ -1,14 +1,15 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { styled } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import MuiAppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import MenuPopupState from "./board";
-import instance from "../../axios/instanceAxios";
 import LogoutIcon from "@mui/icons-material/Logout";
+import PersonIcon from '@mui/icons-material/Person';
 import { Tooltip } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
+import useContextApi from "../../context/useContext";
 
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== "open",
@@ -28,7 +29,8 @@ const AppBar = styled(MuiAppBar, {
   }),
 }));
 
-export default function IndexHeader(props) {
+export default function IndexHeader() {
+  const { payload, setPayload } = useContext(useContextApi)
   return (
     <>
       <CssBaseline />
@@ -50,16 +52,26 @@ export default function IndexHeader(props) {
           >
             SICE
           </Typography>
-          <Tooltip title="LogOut">
-            <Link to={"/"} style={{ textDecoration: "none" }}>
-              <LogoutIcon
-                sx={{ fontSize: 35, cursor: "pointer", color: "white" }}
+          {!payload ? <Tooltip title="Login">
+            <Link to={"/"}>
+              <PersonIcon
+                sx={{ fontSize: 50, cursor: "pointer", color: "white" }}
               />
             </Link>
           </Tooltip>
+            : <Tooltip title="LogOut">
+              <Link to={"/"} style={{ textDecoration: "none" }}>
+                <LogoutIcon
+                  onClick={() => { setPayload([]) }}
+                  sx={{ fontSize: 35, cursor: "pointer", color: "white" }}
+                />
+              </Link>
+            </Tooltip>
+          }
+
         </Toolbar>
       </AppBar>
-      {props.children}
+      <Outlet />
     </>
   );
 }

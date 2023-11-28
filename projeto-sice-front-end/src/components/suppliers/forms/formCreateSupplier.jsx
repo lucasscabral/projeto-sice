@@ -64,7 +64,7 @@ export default function FormCreateSupplier({
     },
     onSuccess: (_) => {
       Notify.success("Fornecedor Cadastrado com sucesso!");
-      handleClose();
+      handleCloseModalCreateSupplier();
     },
     onError: (error) => {
       if (error.response.status == 401) {

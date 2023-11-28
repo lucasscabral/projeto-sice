@@ -4,7 +4,7 @@ import { Type } from "class-transformer";
 
 export enum FormaPagamento {
     Pix = 'Pix',
-    Dinheiro= 'Dinheiro',
+    Dinheiro = 'Dinheiro',
     Credito = 'Credito',
     Debito = 'Debito'
 }

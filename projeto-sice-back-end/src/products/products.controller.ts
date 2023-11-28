@@ -8,11 +8,11 @@ import { HttpExceptionFilter } from 'src/exceptions-filters/products.exceptions-
 export class ProductsController {
   constructor(private readonly productsService: ProductsService) { }
 
-  @HttpCode(201)
-  @Post()
-  create(@Body() createProductDto: CreateProductDto) {
-    return this.productsService.create(createProductDto);
-  }
+  // @HttpCode(201)
+  // @Post()
+  // create(@Body() createProductDto: CreateProductDto) {
+  //   return this.productsService.create(createProductDto);
+  // }
 
   @Get()
   findAll() {
@@ -31,20 +31,20 @@ export class ProductsController {
   }
 
 
-  @Patch('retirar/:id')
-  @UseFilters(HttpExceptionFilter)
-  retirarDoEstoque(@Param('id') id: string, @Body() updateProductDto: UpdateProductDto) {
-    return this.productsService.retirarDoEstoque(+id, updateProductDto);
-  }
+  // @Patch('retirar/:id')
+  // @UseFilters(HttpExceptionFilter)
+  // retirarDoEstoque(@Param('id') id: string, @Body() updateProductDto: UpdateProductDto) {
+  //   return this.productsService.retirarDoEstoque(+id, updateProductDto);
+  // }
 
-  @HttpCode(201)
-  @Patch('repor/:id')
-  reporEstoque(@Param('id') id: string, @Body() updateProductDto: UpdateProductDto) {
-    return this.productsService.reporEstoque(+id, updateProductDto);
-  }
+  // @HttpCode(201)
+  // @Patch('repor/:id')
+  // reporEstoque(@Param('id') id: string, @Body() updateProductDto: UpdateProductDto) {
+  //   return this.productsService.reporEstoque(+id, updateProductDto);
+  // }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.productsService.remove(+id);
-  }
+  // @Delete(':id')
+  // remove(@Param('id') id: string) {
+  //   return this.productsService.remove(+id);
+  // }
 }

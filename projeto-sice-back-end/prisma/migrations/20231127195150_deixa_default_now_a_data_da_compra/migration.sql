@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE `compras` MODIFY `datacompra` DATE NOT NULL DEFAULT CURRENT_TIMESTAMP(3);

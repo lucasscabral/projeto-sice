@@ -1,4 +1,4 @@
-import { useState, forwardRef, useRef } from "react";
+import { useState, forwardRef, useContext } from "react";
 import PropTypes from "prop-types";
 import {
   Box,
@@ -20,6 +20,7 @@ import { useMutation } from "react-query";
 import ButtonActions from "./table/buttonsActions";
 import instance from "../../axios/instanceAxios";
 import { Notify } from "notiflix";
+import useContextApi from "../../context/useContext";
 
 const theme = createTheme({
   palette: {
@@ -60,6 +61,7 @@ NumericFormatCustom.propTypes = {
 export default function IndexBox() {
   const [amountToPay, setAmountToPay] = useState();
   const [productsSelected, setProductsSelected] = useState([]);
+  const { payload } = useContext(useContextApi);
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -85,11 +87,16 @@ export default function IndexBox() {
             idprodutos: +product.idprodutos,
           };
         }),
-        funcionarioId: "",
         formaPagamento: "Dinheiro",
       };
 
-      return instance.post("/venda", dataProduct).then((res) => res.data);
+      return instance.post("/venda", dataProduct,
+        {
+          headers:
+          {
+            'Authorization': `Bearer ${payload?.access_token}`
+          }
+        }).then((res) => res.data);
     },
     onSuccess: (_) => {
       Notify.success("Compra realizada com sucesso!");
@@ -97,7 +104,11 @@ export default function IndexBox() {
       setProductsSelected(rechargeBox);
     },
     onError: (error) => {
-      Notify.failure(`${error.response.data.message}`);
+      if (error.response.status === 401) {
+        return Notify.failure(`O funcionário deve estar logado no sistema`)
+      } else {
+        Notify.failure(`${error.response.data.message}`);
+      }
     },
   });
 

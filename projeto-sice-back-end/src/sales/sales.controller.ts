@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete,UseGuards,Request } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Request } from '@nestjs/common';
 import { SalesService } from './sales.service';
 import { UpdateSaleDto } from './dto/update-sale.dto';
 import { CreateSaleInfoDto } from './dto/create-sale-info';
@@ -10,9 +10,9 @@ export class SalesController {
 
   @UseGuards(EmployeeGuard)
   @Post()
-  create(@Request() req ,@Body() CreateSaleInfoDto: CreateSaleInfoDto) {
+  create(@Request() req, @Body() CreateSaleInfoDto: CreateSaleInfoDto) {
     const payload = req['user']
-    return this.salesService.create(CreateSaleInfoDto,payload);
+    return this.salesService.create(CreateSaleInfoDto, payload);
   }
 
   @Get()

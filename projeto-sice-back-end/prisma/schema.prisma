@@ -26,7 +26,7 @@ model Categoria {
 
 model Compras {
   idcompras                 Int           @unique @default(autoincrement())
-  datacompra                DateTime      @db.Date
+  datacompra                DateTime      @default(now()) @db.Date
   Fornecedores_idfornecedor Int
   fornecedores              Fornecedores  @relation(fields: [Fornecedores_idfornecedor], references: [idfornecedor], onDelete: NoAction, onUpdate: NoAction, map: "fk_compras_Fornecedores1")
   itenscompra               ItensCompra[]
@@ -70,8 +70,8 @@ model Funcionarios {
   endereco            String               @db.VarChar(500)
   Cargo_idCargo       Int
   cpf                 String               @unique @db.VarChar(11)
-  cargo               Cargo                @relation(fields: [Cargo_idCargo], references: [idCargo], onDelete: NoAction, onUpdate: NoAction, map: "fk_Funcionarios_Cargo1")
   funcionariotelefone FuncionarioTelefone?
+  cargo               Cargo                @relation(fields: [Cargo_idCargo], references: [idCargo], onDelete: NoAction, onUpdate: NoAction, map: "fk_Funcionarios_Cargo1")
   vendas              Vendas[]
 
   @@id([idFuncionarios, Cargo_idCargo])
@@ -118,11 +118,11 @@ model ItensVenda {
 
 model Produtos {
   idprodutos            Int           @unique @default(autoincrement())
-  nomeproduto           String        @unique @db.VarChar(120)
+  nomeproduto           String        @db.VarChar(120)
   Categoria_idCategoria Int
   quantidade            Int
-  valor_unitario        Float
   vencimento            DateTime      @db.Date
+  valor_unitario        Float
   descricao             String?       @default("Sem Descrição desse Produto") @db.VarChar(500)
   itenscompra           ItensCompra[]
   itensvenda            ItensVenda[]
@@ -135,7 +135,7 @@ model Produtos {
 
 model Vendas {
   idVendas                    Int                      @unique @default(autoincrement())
-  datavenda                   DateTime?                @default(now())
+  datavenda                   DateTime                 @default(now()) @db.Date
   Funcionarios_idFuncionarios Int
   formasDePagamento           vendas_formasDePagamento
   itensvenda                  ItensVenda[]

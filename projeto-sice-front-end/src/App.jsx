@@ -1,5 +1,5 @@
 import { useState } from "react";
-import IndexHeader from "./components/header";
+import IndexHeader from "./components/header/indexHeader";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import IndexStock from "./components/stock/indexStock";
 import Notiflix from "notiflix";
@@ -11,6 +11,8 @@ import IndexHome from "./components/home/indexHome";
 import useContext from "./context/useContext";
 import IndexSuppliers from "./components/suppliers/indexSuppliers";
 import ScreenListSuppliers from "./components/suppliers/screens/screenListSuppliers";
+import ScreenShoppingList from "./components/suppliers/screens/screenShoppingList";
+import ScreenRegisterPurchases from "./components/suppliers/screens/screenRegisterPurchases";
 
 function App() {
   const [payload, setPayload] = useState();
@@ -36,47 +38,51 @@ function App() {
               </IndexAuth>
             }
           />
-          <Route
-            path="/home"
-            element={
-              <IndexHeader>
+
+          <Route path="/sice" element={<IndexHeader />}>
+            <Route
+              path="home"
+              element={
                 <IndexHome />
-              </IndexHeader>
-            }
-          />
-          <Route
-            path="/caixa"
-            element={
-              <IndexHeader>
-                {" "}
+              }
+            />
+            <Route
+              path="caixa"
+              element={
                 <IndexBox />
-              </IndexHeader>
-            }
-          />
-          <Route
-            path="/estoque"
-            element={
-              <IndexHeader>
+              }
+            />
+            <Route
+              path="estoque"
+              element={
                 <IndexStock />
-              </IndexHeader>
-            }
-          />
-          <Route
-            path="/fornecedores"
-            element={
-              <IndexHeader>
+              }
+            />
+            <Route
+              path="fornecedores"
+              element={
                 <IndexSuppliers />
-              </IndexHeader>
-            }
-          />
-          <Route
-            path="/fornecedores/lista"
-            element={
-              <IndexHeader>
+              }
+            />
+            <Route
+              path="fornecedores/lista"
+              element={
                 <ScreenListSuppliers />
-              </IndexHeader>
-            }
-          />
+              }
+            />
+            <Route
+              path="fornecedores/lista-compras"
+              element={
+                <ScreenShoppingList />
+              }
+            />
+            <Route
+              path="fornecedores/registra-compras"
+              element={
+                <ScreenRegisterPurchases />
+              }
+            />
+          </Route>
         </Routes>
       </BrowserRouter>
     </useContext.Provider>
