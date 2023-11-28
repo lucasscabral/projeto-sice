@@ -1,13 +1,13 @@
-import { Box, Button, ThemeProvider, Typography, createTheme } from "@mui/material";
+import { Box, Button, ThemeProvider, Tooltip, Typography, createTheme } from "@mui/material";
 import TableUtils from "../../utils/tableUtils";
 import styled from "styled-components";
 import { useQuery } from "react-query";
 import instance from "../../axios/instanceAxios";
 import { useState } from "react";
 import ButtonActions from "./buttonActions";
-import FormCreationProduct from "./forms/formCretionProduct";
 import { Loading } from "notiflix";
 import * as dayjs from "dayjs";
+import ModalCreateCategory from "./modal/modalCreateCategory";
 
 const theme = createTheme({
     palette: {
@@ -21,10 +21,11 @@ const theme = createTheme({
 export default function IndexStock() {
     const [modification, setModification] = useState(false);
     const [rowSelected, setRowSelected] = useState(false);
+
+    const { data, isLoading, isSuccess, refetch } = useQuery("produtos", () => { return instance.get("/produtos").then((res) => res.data) })
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
-    const { data, isLoading, isSuccess, refetch } = useQuery("produtos", () => { return instance.get("/produtos").then((res) => res.data) })
 
     localStorage.setItem(
         "rowSelected",
@@ -71,6 +72,7 @@ export default function IndexStock() {
             headerName: "Val.Uni.",
             width: 160,
             disableClickEventBubbling: true,
+            valueGetter: (params) => `R$ ${params?.row.valor_unitario}`
         },
         {
             headerName: "Ações",
@@ -101,10 +103,20 @@ export default function IndexStock() {
             <Box marginTop={15} paddingLeft={10} paddingRight={10} sx={{ width: "100%" }}>
                 <Cabecalho>
                     <Typography variant="h4" sx={{ fontWeight: "bold" }}>ESTOQUE</ Typography>
-                    <Button variant="contained" size="large" color="info" sx={{ fontWeight: "bold" }} onClick={handleOpen}>+ Adicionar</Button>
+                    <Tooltip title="Cadastrar nova categoria">
+                        <Button
+                            variant="contained"
+                            size="large"
+                            color="info"
+                            sx={{ fontWeight: "bold" }}
+                            onClick={handleOpen}
+                        >
+                            Criar Categoria
+                        </Button>
+                    </Tooltip>
                 </Cabecalho>
                 <TableUtils dataContent={data} columns={columns} setRowSelected={setRowSelected} />
-                {open ? <FormCreationProduct open={open} handleClose={handleClose} refetch={refetch} /> : null}
+                {open ? <ModalCreateCategory open={open} handleClose={handleClose} /> : null}
             </Box>
         </ThemeProvider>
     )
