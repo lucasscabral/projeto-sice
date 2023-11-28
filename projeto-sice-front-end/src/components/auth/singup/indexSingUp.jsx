@@ -39,7 +39,7 @@ export default function IndexSingnUp() {
         funcionariotelefone: phone,
         endereco,
       };
-
+      console.log(dataSignUp)
       return instance
         .post("funcionario/signUp", dataSignUp)
         .then((res) => res.data);
@@ -49,6 +49,7 @@ export default function IndexSingnUp() {
       navigate("/");
     },
     onError: (error) => {
+      console.log(error.response)
       if (error.response.status == 401) {
         Notify.failure("Este funcionário já esta cadastrado!");
       } else {
